@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#ditect OS and distribution
+#detect OS and distribution
 source /etc/os-release
 case $PRETTY_NAME in
     "AlmaLinux"*)
