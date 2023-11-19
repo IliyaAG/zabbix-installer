@@ -1,14 +1,14 @@
 #!/bin/bash
 
-#detect OS and distribution
+#ditect OS and distribution
 source /etc/os-release
 case $PRETTY_NAME in
-    "AlmaLinux"*)
-        REPO_URL="https://repo.zabbix.com/zabbix/6.4/rhel/9/x86_64/zabbix-release-6.4-1.el9.noarch.rpm"
-        pkg_uri=""
-        pkg_mgr="dnf"
-        os_type="rhel"
-        ;;
+#    "AlmaLinux"*)
+#        REPO_URL="https://repo.zabbix.com/zabbix/6.4/rhel/9/x86_64/zabbix-release-6.4-1.el9.noarch.rpm"
+#        pkg_uri=""
+#        pkg_mgr="dnf"
+#        os_type="rhel"
+#        ;;
     "Ubuntu 20.04"*)
         REPO_URL="https://repo.zabbix.com/zabbix/6.4/ubuntu/pool/main/z/zabbix-release/zabbix-release_6.4-1+ubuntu20.04_all.deb"
         pkg_uri="zabbix-release_6.4-1+ubuntu20.04_all.deb"
@@ -64,8 +64,17 @@ else
 fi 
 sudo $pkg_mgr update -y
 #almalinux installation
-if [[ $os_type == "rhel" ]];then
-    sudo yum -U
+#if [[ $os_type == "rhel" ]];then
+#    sudo $pkg_mgr install epel-relase -y
+#    sudo rpm -Uvh $REPO_URL
+#    sudo $pkg_mgr install zabbix-server-mysql zabbix-web-mysql zabbix-nginx-conf zabbix-sql-scripts zabbix-selinux-policy zabbix-agent langpacks-en glibc-all-langpacks mariadb-srver -y
+#    service_name="mariadb"
+#     systemctl enable $service_name
+#     if systemctl is-active --quiet "$service_name" ; then
+#        echo "$service_name running"
+#        else
+#            systemctl start "$service_name"
+#        fi
 #Ubuntu installation
 elif [[ $os_type == "deb" ]];then
     wget $REPO_URL
@@ -98,8 +107,9 @@ EOF
     sudo systemctl enable zabbix-server zabbix-agent nginx php7.4-fpm
     service_name="zabbix-server"
     if systemctl is-active --quiet "$service_name.service" ; then
-    echo "$service_name running"
+        echo "$service_name running"
     else
-    systemctl start "$service_name"
+        systemctl start "$service_name"
     fi
+echo "zabbix service installed"
 fi
