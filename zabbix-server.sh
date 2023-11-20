@@ -64,18 +64,36 @@ else
 fi 
 sudo $pkg_mgr update -y
 #almalinux installation
-#if [[ $os_type == "rhel" ]];then
-#    sudo $pkg_mgr install epel-relase -y
-#    sudo rpm -Uvh $REPO_URL
-#    sudo $pkg_mgr install zabbix-server-mysql zabbix-web-mysql zabbix-nginx-conf zabbix-sql-scripts zabbix-selinux-policy zabbix-agent langpacks-en glibc-all-langpacks mariadb-srver -y
-#    service_name="mariadb"
-#     systemctl enable $service_name
-#     if systemctl is-active --quiet "$service_name" ; then
-#        echo "$service_name running"
-#        else
-#            systemctl start "$service_name"
-#        fi
+if [[ $os_type == "rhel" ]];then
+    sudo $pkg_mgr install epel-relase -y
+    sudo rpm -Uvh $REPO_URL
+    sudo $pkg_mgr install zabbix-server-mysql zabbix-web-mysql zabbix-nginx-conf zabbix-sql-scripts zabbix-selinux-policy zabbix-agent langpacks-en glibc-all-langpacks mariadb-srver -y
+    service_name="mariadb"
+    systemctl enable $service_name
+    if systemctl is-active --quiet "$service_name" ; then
+        echo "$service_name running"
+        else
+            systemctl start "$service_name"
+        fi
+#create database and user
+    mariadb -uroot -p <<EOF
+create database zabbix_proxy character set utf8mb4 collate utf8mb4_bin;
+create user zabbix@localhost identified by 'password';
+grant all privileges on zabbix.* to zabbix@localhost;
+set global log_bin_trust_function_creators = 1;
+EOF
+#import data in database
+    zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | mysql --default-character-set=utf8mb4 -uzabbix -p$db_pass zabbix
+    log_bin_trust_function_creators
+    mysql -uroot -p <<EOF
+set global log_bin_trust_function_creators = 0;
+EOF
+    sed -i 's/#        listen          8080;/         listen          8080;/' /etc/zabbix/nginx.conf
+    sed -i "s/#        server_name     example.com;/        server_name     example.com;/" /etc/zabbix/nginx.conf
+    sudo systemctl restart zabbix-server zabbix-agent nginx php-fpm
+    sudo systemctl enable zabbix-server zabbix-agent nginx php-fpm
 #Ubuntu installation
+     
 elif [[ $os_type == "deb" ]];then
     wget $REPO_URL
     sudo dpkg -i $pkg_uri
@@ -102,7 +120,7 @@ set global log_bin_trust_function_creators = 0;
 EOF
     sed -i "s/# DBPassword=/DBPassword=$db_pass/" /etc/zabbix/zabbix_server.conf
     sed -i 's/#        listen          8080;/         listen          8080;/' /etc/zabbix/nginx.conf
-    sed -i "s/#        server_name     example.com;/        server_name     $hostname;/" /etc/zabbix/nginx.conf
+    sed -i "s/#        server_name     example.com;/        server_name     example.com;/" /etc/zabbix/nginx.conf
     sudo systemctl restart zabbix-server zabbix-agent nginx php7.4-fpm
     sudo systemctl enable zabbix-server zabbix-agent nginx php7.4-fpm
     service_name="zabbix-server"
@@ -111,5 +129,5 @@ EOF
     else
         systemctl start "$service_name"
     fi
-echo "zabbix service installed"
+echo "zabbix service installed "
 fi
