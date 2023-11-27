@@ -75,6 +75,7 @@ if [[ $os_type == "rhel" ]];then
         else
             systemctl start "$service_name"
         fi
+    mariadb-secure-installation
 #create database and user
     mariadb -uroot -p <<EOF
 create database zabbix_proxy character set utf8mb4 collate utf8mb4_bin;
