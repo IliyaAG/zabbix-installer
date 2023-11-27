@@ -1,4 +1,3 @@
-#install zabbix proxy
 #!/bin/bash
 
 #ditect OS and distribution
@@ -66,7 +65,8 @@ fi
 sudo $pkg_mgr update -y
 #almalinux installation
 if [[ $os_type == "rhel" ]];then
-
+    sudo $pkg_mgr install epel-relase -y
+    sudo rpm -Uvh $REPO_URL
 #Ubuntu installation
      
 elif [[ $os_type == "deb" ]];then
@@ -77,13 +77,10 @@ elif [[ $os_type == "deb" ]];then
     sudo $pkg_mgr install software-properties-common -y
     curl -LsS -O https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
     bash mariadb_repo_setup --mariadb-server-version=10.6
-    apt update -y
-    sudo apt -y install mariadb-common mariadb-server-10.6 mariadb-client-10.6 -y
+    $pkg_mgr update -y
+    sudo $pkg_mgr -y install mariadb-common mariadb-server-10.6 mariadb-client-10.6 -y
     sudo systemctl start mariadb
     sudo systemctl enable mariadb
-    sudo unlink /etc/resolv.conf
-    sudo touch /etc/resolv.conf
-    echo "nameserver 8.8.8.8"> /etc/resolv.conf
     sudo mysql -u root -p <<EOF
 create database zabbix_proxy character set utf8mb4 collate utf8mb4_bin;
 create user zabbix@localhost identified by 'password';
