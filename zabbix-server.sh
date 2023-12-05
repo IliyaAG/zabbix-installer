@@ -9,6 +9,12 @@ case $PRETTY_NAME in
 #        pkg_mgr="dnf"
 #        os_type="rhel"
 #        ;;
+#    "CentOS"*)
+#        REPO_URL="https://repo.zabbix.com/zabbix/6.4/rhel/9/x86_64/zabbix-release-6.4-1.el9.noarch.rpm"
+#        pkg_uri=""
+#        pkg_mgr="dnf"
+#        os_type="rhel"
+#        ;;
     "Ubuntu 20.04"*)
         REPO_URL="https://repo.zabbix.com/zabbix/6.4/ubuntu/pool/main/z/zabbix-release/zabbix-release_6.4-1+ubuntu20.04_all.deb"
         pkg_uri="zabbix-release_6.4-1+ubuntu20.04_all.deb"
@@ -63,11 +69,14 @@ else
     echo -e "nameserver $dns_server\nnameserver $dns_server2"
 fi 
 sudo $pkg_mgr update -y
+#you can sellect database and web server on next commit
+#--------------------------------------
 #almalinux installation
 if [[ $os_type == "rhel" ]];then
     sudo $pkg_mgr install epel-relase -y
     sudo rpm -Uvh $REPO_URL
     sudo $pkg_mgr install zabbix-server-mysql zabbix-web-mysql zabbix-nginx-conf zabbix-sql-scripts zabbix-selinux-policy zabbix-agent langpacks-en glibc-all-langpacks mariadb-srver -y
+    $pkg_mgr clean all
     service_name="mariadb"
     systemctl enable $service_name
     if systemctl is-active --quiet "$service_name" ; then
@@ -77,9 +86,11 @@ if [[ $os_type == "rhel" ]];then
         fi
     mariadb-secure-installation
 #create database and user
+    echo "enter your data base password: "
+    read -s db_pass
     mariadb -uroot -p <<EOF
 create database zabbix_proxy character set utf8mb4 collate utf8mb4_bin;
-create user zabbix@localhost identified by 'password';
+create user zabbix@localhost identified by '$db_pass';
 grant all privileges on zabbix.* to zabbix@localhost;
 set global log_bin_trust_function_creators = 1;
 EOF
@@ -130,5 +141,5 @@ EOF
     else
         systemctl start "$service_name"
     fi
-echo "zabbix service installed "
 fi
+echo "zabbix service installed "
