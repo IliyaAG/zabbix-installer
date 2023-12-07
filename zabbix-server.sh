@@ -73,11 +73,25 @@ sudo $pkg_mgr update -y
 #ask web server
 #echo -e "select your web server between apache and nginx \na for apache and n for nginx : "
 #read webserver
-
+#while [ "$webserver" != "a" ] && [ "$webserver" != "n" ] && [ "$webserver" != "apache" ] && [ "$webserver" != "nginx" ]; do
+#    read -p "invalid input please enter a or n: "
+#done
+#if [ "$webserver" == "a" ] || [ "$webserver" == "apache" ]; then
+#    web="apache"
+#elif [ "$webserver" == "n" ] || [ "$webserver" == "nginx" ]; then
+#    web=nginx
+#fi
 #ask database
-#echo -e "select your web server between apache and nginx \nm for mariadb and p for postgresql : "
+#echo -e "select your database  between postgresql and mariadb \nm for mariadb and p for postgresql : "
 #read database
-
+#while [ "$database" != "p" ] && [ "$database" != "m" ] && [ "$database" != "mariadb" ] && [ "$database" != "postgresql" ]; do
+#    read -p "invalid input please enter p or m: " database
+#done
+#if [ "$database" == "p" ] || [ "$database" == "postgresql" ]; then
+#    db="pgsql"
+#elif [ "$database" == "m" ] || [ "$database" == "mariadb" ]; then
+#    db="mysql"
+#fi
 #almalinux installation
 if [[ $os_type == "rhel" ]];then
     sudo $pkg_mgr install epel-relase -y
