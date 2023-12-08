@@ -1,2 +1,3 @@
 # zabbix-installer
-auto install zabbix
+
+Install Zabbix monitorig along with the database and web server you choose
