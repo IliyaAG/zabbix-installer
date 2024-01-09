@@ -2,4 +2,4 @@
 
 
 ![Static Badge](https://img.shields.io/badge/status-not_complete-red)
-Install Zabbix monitorig along with the database and web server you choose
+### Install Zabbix monitorig along with the database and web server you choose
