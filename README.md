@@ -2,4 +2,10 @@
 
 
 ![Static Badge](https://img.shields.io/badge/status-not_complete-red)
-### Install Zabbix monitorig along with the database and web server you choose
+## Install Zabbix monitorig along with the database and web server you choose
+
+#### sopurted distributions
+
+![Static Badge](https://img.shields.io/badge/Alma_linux-%23000000)
+
+![Static Badge](https://img.shields.io/badge/Ubuntu-%23DC5F00)
