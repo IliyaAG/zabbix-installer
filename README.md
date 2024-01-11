@@ -7,3 +7,5 @@
 #### sopurted distributions
 
 ![Static Badge](https://img.shields.io/badge/Alma_linux-%23000000) ![Static Badge](https://img.shields.io/badge/Ubuntu-%23DC5F00) ![Static Badge](https://img.shields.io/badge/CentOS-%23EEEEEE) ![Static Badge](https://img.shields.io/badge/Debian-%23FE0000)
+
+### do step by step
