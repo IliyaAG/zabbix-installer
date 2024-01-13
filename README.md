@@ -12,3 +12,4 @@
 
 ##### download packages
 
+##### make the file executable
