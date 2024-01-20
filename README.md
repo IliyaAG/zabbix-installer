@@ -11,7 +11,9 @@
 ### do step by step
 
 ##### download packages
-
+```bash
+wget https://github.com/iliyaAG/zabbix-installer
+```
 ##### make the file executable
 
 ##### run zabbix-installer
