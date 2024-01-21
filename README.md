@@ -10,7 +10,7 @@
 
 ### do step by step
 
-##### download packages
+##### #download packages
 ```bash
 wget https://github.com/iliyaAG/zabbix-installer
 ```
