@@ -14,7 +14,7 @@
 ```bash
 wget https://github.com/iliyaAG/zabbix-installer
 ```
-##### make the file executable
+##### #make the file executable:
 
-##### run zabbix-installer
+##### #run zabbix-installer:
 
