@@ -15,6 +15,8 @@
 wget https://github.com/iliyaAG/zabbix-installer
 ```
 ##### #make the file executable:
-
+```bash
+chmod +x zabbix-installer.sh
+```
 ##### #run zabbix-installer:
 
