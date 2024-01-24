@@ -19,4 +19,5 @@ wget https://github.com/iliyaAG/zabbix-installer
 chmod +x zabbix-server.sh
 ```
 ##### #run zabbix-installer:
-
+```bash
+./zabbix-server.sh
